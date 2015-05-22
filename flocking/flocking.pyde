@@ -8,4 +8,7 @@ def draw():
     global controller
     controller.draw()
     
+def mouseClicked():
+    global controller
+    controller.add_mousefollower()
 

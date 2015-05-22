@@ -1,11 +1,12 @@
 class Agent:
-    def __init__(self, initialpos, initialspeed, maxs, maxf):
+    def __init__(self, initialpos, initialspeed, maxs, maxf, sdist):
         self.pos = initialpos
         self.speed = initialspeed
         self.acceleration = PVector(0, 0)
         self.mass = 1.0
         self.maxspeed = maxs
         self.maxforce = maxf
+        self.sightdistance = sdist
     
     def apply_force(self, force):
         self.acceleration = self.acceleration + force/self.mass
@@ -24,9 +25,67 @@ class Agent:
         elif self.pos.y < 0:
             self.pos.y = height - self.pos.y
          
- 
+    
+    def cognate(self, agents):
+        neighbors = list()
+        for agent in agents:
+            if agent != self:
+                diffvec = agent.pos - self.pos
+                if diffvec.mag() < self.sightdistance:
+                    neighbors.append(agent)
 
-              
+        self.flock(neighbors)
+        
+    def align_force(self, agents):
+        sum = PVector(0, 0)
+        for agent in agents:
+            sum = sum + agent.speed
+            
+        desired = sum / len(agents)
+        
+        return self.desired_to_force(desired)
+    
+    def separate_force(self, agents):
+        sum = PVector(0, 0)
+        for agent in agents:
+            flee = self.pos - agent.pos
+            fleedist = flee.mag()
+            flee.normalize()
+            sum = sum + flee / (fleedist + 0.00001)    
+            
+        avgfleedesired = sum / len(agents)
+
+        return self.desired_to_force(avgfleedesired)
+    
+
+    def cohesion_force(self, agents):
+        sum = PVector(0, 0)
+        for agent in agents:
+            sum = sum + agent.pos
+            
+        avgpos = sum / len(agents)    
+        desired = avgpos - self.pos
+        
+        return self.desired_to_force(desired)
+    
+    def desired_to_force(self, desired):
+        desired_c = desired.get()
+        desired_c.normalize()
+        desired_c = desired_c * self.maxspeed
+        force = desired_c - self.speed
+        force.limit(self.maxforce)
+        return force
+        
+    def flock(self, agents):
+        if len(agents) > 0:
+            separate_force = self.separate_force(agents)
+            self.apply_force(separate_force)
+            align_force = self.align_force(agents)
+            self.apply_force(align_force)
+            cohesion_force = self.cohesion_force(agents)
+            self.apply_force(cohesion_force)
+        
+        
     def seek(self, target):
         desired = target - self.pos
         distance = desired.mag() # for later
