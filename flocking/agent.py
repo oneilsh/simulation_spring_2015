@@ -23,7 +23,10 @@ class Agent:
             self.pos.y = self.pos.y - height
         elif self.pos.y < 0:
             self.pos.y = height - self.pos.y
-            
+         
+ 
+
+              
     def seek(self, target):
         desired = target - self.pos
         distance = desired.mag() # for later
@@ -37,13 +40,14 @@ class Agent:
         force.limit(self.maxforce)
         self.apply_force(force)
         
-            
+        
     def move(self):
         self.speed = self.speed + self.acceleration
         self.speed.limit(self.maxspeed)
         self.pos = self.pos + self.speed
         self.fix_position()
-        
+
+
     def draw(self):
         fill(40, 40, 40)
         stroke(255, 255, 255)
