@@ -22,4 +22,4 @@ class Controller:
                 agent.seek(target)
             
             agent.move()
-        agent.reset_acceleration() # whoops
+            agent.reset_acceleration() # whoops
