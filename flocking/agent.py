@@ -6,7 +6,7 @@ class Agent:
         self.mass = 1.0
         self.maxspeed = maxs
         self.maxforce = maxf
-        self.sightdistance = sdist
+        self.sightdistance = sdistz
     
     def apply_force(self, force):
         self.acceleration = self.acceleration + force/self.mass
@@ -19,11 +19,11 @@ class Agent:
         if self.pos.x > width:
             self.pos.x = self.pos.x - width
         elif self.pos.x < 0:
-            self.pos.x = width - self.pos.x
+            self.pos.x = width + self.pos.x
         if self.pos.y > height:
             self.pos.y = self.pos.y - height
         elif self.pos.y < 0:
-            self.pos.y = height - self.pos.y
+            self.pos.y = height + self.pos.y
          
     
     def cognate(self, agents):
@@ -69,7 +69,7 @@ class Agent:
         return self.desired_to_force(desired)
     
     def desired_to_force(self, desired):
-        desired_c = desired.get()
+        desired_c = desired #.get()
         desired_c.normalize()
         desired_c = desired_c * self.maxspeed
         force = desired_c - self.speed
@@ -79,7 +79,7 @@ class Agent:
     def flock(self, agents):
         if len(agents) > 0:
             separate_force = self.separate_force(agents)
-            self.apply_force(separate_force)
+            self.apply_force(separate_force * 1.4)
             align_force = self.align_force(agents)
             self.apply_force(align_force)
             cohesion_force = self.cohesion_force(agents)
@@ -116,16 +116,16 @@ class Agent:
         translate(self.pos.x, self.pos.y)
         rotate(angle)
         
-        rect(-15.0, -5.0, 30.0, 10.0)
+        rect(-10.0, -2.5, 20.0, 5.0)
         
         pushMatrix()  # whisker 1
         rotate(-1*PI/8)
-        line(0.0, 0.0, 40.0, 0.0)
+        line(0.0, 0.0, 20.0, 0.0)
         popMatrix()
         
         pushMatrix()  # whisker 2
         rotate(PI/8)
-        line(0.0, 0.0, 40.0, 0.0)
+        line(0.0, 0.0, 20.0, 0.0)
         popMatrix()
         
         popMatrix()

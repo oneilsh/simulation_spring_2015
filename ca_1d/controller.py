@@ -3,9 +3,10 @@ import time
 
 class Controller:
     def __init__(self):
-        self.caboard = CaBoard(50)   # no of cells in the world
+        size(600, 600)
+        self.caboard = CaBoard(100)   # no of cells in the world
         
     def draw(self):
         self.caboard.draw()
         self.caboard.update()
-        time.sleep(1)                # sleep 1 second
+        time.sleep(0.05)                # sleep 1 second

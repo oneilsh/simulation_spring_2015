@@ -8,11 +8,11 @@ class CaBoard:
         self.currentgen = self.new_cell_list()
         self.lastgen = self.new_cell_list()
         
-        #middle_cell = self.currentgen[int(self.numcells/2)]
-        #middle_cell.set_state#(1)
-        for cell in self.currentgen:
-            if random(0,1) < 0.2:
-                cell.set_state(1)
+        middle_cell = self.currentgen[int(self.numcells/2)]
+        middle_cell.set_state(1)
+        #for cell in self.currentgen:
+        #    if random(0,1) < 0.2:
+        #        cell.set_state(1)
     
     def update(self):
         temp = self.lastgen
@@ -41,9 +41,21 @@ class CaBoard:
     
 
     def draw(self):
+        stroke(0, 0, 0)
         for cell in self.currentgen:
             if cell.state == 1:
-                sys.stdout.write("#")
+                fill(200, 200, 200)
+                #sys.stdout.write("#")
             else:
-                sys.stdout.write(" ")
-        sys.stdout.write("\n")
+                fill(40, 40, 40)
+                #sys.stdout.write("_")
+            
+            cellwidth = width/float(self.numcells)
+            cellheight = cellwidth
+            xpos = cellwidth * cell.position
+            ypos = self.gen_number * cellheight
+            if ypos > height:
+                ypos = 0
+                self.gen_number = 0
+            rect(xpos, ypos, cellwidth, cellheight)
+        #sys.stdout.write("\n")
