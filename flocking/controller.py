@@ -1,14 +1,15 @@
 from agent import Agent
 from mousefollower import MouseFollower
+import voronoi
 
 class Controller:
     def __init__(self):
         size(800, 600)
     
         self.agents = list()
-        for i in range(0,10):
+        for i in range(0,40):
             newagent = Agent(PVector(random(0, width), random(0, height)),          # pos
-                             PVector(random(-3,3), random(-3,3)), # speed
+                             PVector(random(0,0), random(0,0)), # speed
                              random(4,4.1),                         # maxspeed
                              random(0.1, 0.15),                   # maxforce
                              random(90, 90))                    # sightdist
@@ -51,7 +52,11 @@ class Controller:
             col = int(agent.pos.x/self.gridsize)
             self.grid[row][col].append(agent)
             
+        agent_positions = list()
+
         for agent in self.agents:
+            agent_positions.append(agent.pos)
+
             agent.draw()
             
             nearby = list()
@@ -75,3 +80,15 @@ class Controller:
             
             agent.move()
             agent.reset_acceleration() # whoops
+            
+        v = voronoi.computeVoronoiDiagram(agent_positions)
+        lines = v[1]
+        vertices = v[0]
+        stroke(255, 255, 255)
+        for l in lines:
+            v1index = l[1]
+            v2index = l[2]
+            if v1index != -1 and v2index != -1:
+                p1 = vertices[v1index]
+                p2 = vertices[v2index]
+                line(p1[0], p1[1], p2[0], p2[1])

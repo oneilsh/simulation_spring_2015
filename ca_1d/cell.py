@@ -1,28 +1,35 @@
 
 class Cell:
-    def __init__(self, initstate, initpos):
+    def __init__(self, initstate, initrow, initcol):
         self.state = initstate
-        self.position = initpos
+        self.row = initrow
+        self.col = initcol
+
         
     def set_state(self, newstate):
         self.state = newstate
         
     def compute_next_state(self, nbh):
-        if nbh[0].state == 1 and nbh[1].state == 1 and nbh[2].state == 1:
+        count = 0
+        for cell in nbh:
+            if cell.state == 1:
+                count = count + 1
+                
+        if self.state == 1 and count < 2:
             return 0
-        elif nbh[0].state == 1 and nbh[1].state == 1 and nbh[2].state == 0:
+        if self.state == 1 and count > 3:
             return 0
-        elif nbh[0].state == 1 and nbh[1].state == 0 and nbh[2].state == 1:
-            return 0
-        elif nbh[0].state == 1 and nbh[1].state == 0 and nbh[2].state == 0:
+        if self.state == 0 and count == 3:
             return 1
-        elif nbh[0].state == 0 and nbh[1].state == 1 and nbh[2].state == 1:
-            return 1
-        elif nbh[0].state == 0 and nbh[1].state == 1 and nbh[2].state == 0:
-            return 1
-        elif nbh[0].state == 0 and nbh[1].state == 0 and nbh[2].state == 1:
-            return 1
-        elif nbh[0].state == 0 and nbh[1].state == 0 and nbh[2].state == 0:
-            return 0
+        return self.state
+    
+    def draw(self, cellwidth, cellheight):
+        stroke(0, 0, 0)
+        if self.state == 1:
+            fill(200, 200, 200)
         else:
-            print("wft")
+            fill(40, 40, 40)
+            
+        xpos = self.col * cellwidth
+        ypos = self.row * cellheight
+        rect(xpos, ypos, cellwidth, cellheight)

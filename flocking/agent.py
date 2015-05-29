@@ -6,7 +6,7 @@ class Agent:
         self.mass = 1.0
         self.maxspeed = maxs
         self.maxforce = maxf
-        self.sightdistance = sdistz
+        self.sightdistance = sdist
     
     def apply_force(self, force):
         self.acceleration = self.acceleration + force/self.mass
@@ -79,9 +79,9 @@ class Agent:
     def flock(self, agents):
         if len(agents) > 0:
             separate_force = self.separate_force(agents)
-            self.apply_force(separate_force * 1.4)
-            align_force = self.align_force(agents)
-            self.apply_force(align_force)
+            self.apply_force(separate_force * 1.1)
+            #align_force = self.align_force(agents)
+            #self.apply_force(align_force)
             cohesion_force = self.cohesion_force(agents)
             self.apply_force(cohesion_force)
         
@@ -110,22 +110,22 @@ class Agent:
     def draw(self):
         fill(40, 40, 40)
         stroke(255, 255, 255)
-        #ellipse(self.pos.x, self.pos.y, 10, 10)
-        pushMatrix()
-        angle = atan2(self.speed.y, self.speed.x)
-        translate(self.pos.x, self.pos.y)
-        rotate(angle)
+        ellipse(self.pos.x, self.pos.y, 10, 10)
+        #pushMatrix()
+        #angle = atan2(self.speed.y, self.speed.x)
+        #translate(self.pos.x, self.pos.y)
+        #rotate(angle)
         
-        rect(-10.0, -2.5, 20.0, 5.0)
+        #rect(-10.0, -2.5, 20.0, 5.0)
         
-        pushMatrix()  # whisker 1
-        rotate(-1*PI/8)
-        line(0.0, 0.0, 20.0, 0.0)
-        popMatrix()
+        #pushMatrix()  # whisker 1
+        #rotate(-1*PI/8)
+        #line(0.0, 0.0, 20.0, 0.0)
+        #popMatrix()
         
-        pushMatrix()  # whisker 2
-        rotate(PI/8)
-        line(0.0, 0.0, 20.0, 0.0)
-        popMatrix()
+        #pushMatrix()  # whisker 2
+        #rotate(PI/8)
+        #line(0.0, 0.0, 20.0, 0.0)
+        #popMatrix()
         
-        popMatrix()
+        #popMatrix()
