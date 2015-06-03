@@ -43,4 +43,12 @@ class Individual:
             self.genotype[randlocus] = 0
         else:
             self.genotype[randlocus] = 1
+            
+    def __cmp__(self, other):
+        if self.fitness() < other.fitness():
+            return -1
+        elif self.fitness() > other.fitness():
+            return 1
+        else:
+            return 0
 

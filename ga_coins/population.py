@@ -1,4 +1,5 @@
 import random as randommodule
+from individual import Individual
 
 class Population:
     def __init__(self, coins_list, target, popsize):
@@ -18,5 +19,31 @@ class Population:
                 offspring.mutate()
                 
             self.individuals.append(offspring)
+    
+    def individual_to_fitness(self, ind):
+        return ind.fitness()    
+    
+    def cull(self):
+        #self.individuals.sort(key = self.individual_to_fitness)
+        self.individuals.sort()
+        self.individuals = self.individuals[0:self.popsize]
+        
+    def print_fitness_stats(self):
+        fitnesses = list()
+        sum = 0.0
+        for ind in self.individuals:
+            fitnesses.append(ind.fitness())
+            sum = sum + ind.fitness()
             
+        meanfit = sum / len(self.individuals)
+        fitnesses.sort()
+        minfit = fitnesses[0]
+        maxfit = fitnesses[len(fitnesses) - 1]
+        medianfit = fitnesses[int(len(fitnesses)/2)]
+        print("%s\t%s\t%s\t%s"%(minfit, meanfit, medianfit, maxfit))
+        
+        self.individuals.sort()
+        bestind = self.individuals[0]
+        bestind.debug_print()
+        
         
